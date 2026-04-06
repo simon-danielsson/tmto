@@ -100,7 +100,8 @@ impl Tmto {
             }
 
             self.sout.flush()?;
-            thread::sleep(Duration::from_millis(5));
+            // *brakoll - d: change millis to sec, p: 0, t: fix, s: closed
+            thread::sleep(Duration::from_secs(1));
         }
         if self.cycle == Cycle::Rest {
             self.cycle = Cycle::Work
