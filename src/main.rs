@@ -89,10 +89,11 @@ impl Tmto {
         }
     }
 
+    // *brakoll - d: make sure that the line is cleared properly before cycle starts, p: 0, t: fix, s: closed
     fn draw(&mut self, time: u64) -> io::Result<()> {
         for elap_sec in (0..=time * 60).rev() {
             // reset cursor
-            self.move_cursor_up(2);
+            self.move_cursor_up(1);
 
             {
                 let c_cyc_txt = match self.cycle {
@@ -103,7 +104,7 @@ impl Tmto {
                 let elap_min = elap_sec / 60;
                 let elap_sec = elap_sec % 60;
                 let prog_text =
-                    format!("\n{c_cyc_txt} [{elap_min:02}:{elap_sec:02}]\n");
+                    format!("{c_cyc_txt} [{elap_min:02}:{elap_sec:02}]\n");
 
                 self.clear_line(&prog_text, false);
             }
