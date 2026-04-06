@@ -17,7 +17,7 @@ fn main() -> io::Result<()> {
         return Ok(());
     }
 
-    // *brakoll - d: add check for if arguments have been supplied, p: 0, t: feature, s: open
+    // *brakoll - d: add check for if arguments have been supplied, p: 0, t: feature, s: closed
     if t.args.tot == 0 || t.args.rest == 0 {
         println!(
             "You did not supply the correct flags! Use \"tmto help\" if you're feeling stuck."
