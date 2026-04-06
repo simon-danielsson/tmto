@@ -17,7 +17,16 @@ fn main() -> io::Result<()> {
         return Ok(());
     }
 
-    t.info_print();
+    // *brakoll - d: add check for if arguments have been supplied, p: 0, t: feature, s: open
+    if t.args.tot == 0 || t.args.rest == 0 {
+        println!(
+            "You did not supply the correct flags! Use \"tmto help\" if you're feeling stuck."
+        );
+        return Ok(());
+    }
+
+    // *brakoll - d: remove debug print msg, p: 0, t: fix, s: closed
+    // t.info_print();
 
     while t.state == State::Active {
         match t.cycle {
