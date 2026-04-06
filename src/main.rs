@@ -88,9 +88,10 @@ impl Tmto {
             _ => "\x1b[30;42m",           // black on green
         };
         if self.state == State::Pause {
-            col = "\x1b[30;41m"; // black on blue
+            col = "\x1b[30;41m"; // black on red
         }
 
         format!("{col}{t}{reset}")
     }
 }
+

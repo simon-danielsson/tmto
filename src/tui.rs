@@ -23,39 +23,27 @@ impl Tmto {
         let mut time_left: u64 = time * 60;
 
         while time_left > 0 {
-            // reset cursor
-            self.controls()?;
-            let mut prog_text = {
-                let c_cyc_txt = match self.cycle {
-                    Cycle::Work => "WORK",
-                    Cycle::Rest => "REST",
-                };
-
-                let elap_min = time_left / 60;
-                let time_left = time_left % 60;
-
-                let prog_text =
-                    format!(" {c_cyc_txt} {elap_min:02}:{time_left:02} ");
-                self.add_color(&prog_text)
+            let mut label = match self.cycle {
+                Cycle::Work => "WORK",
+                Cycle::Rest => "REST",
             };
+            self.controls()?;
 
             match self.state {
                 State::Quit => {
                     return Ok(());
                 }
                 State::Active => {}
-                State::Pause => {
-                    prog_text = {
-                        let elap_min = time_left / 60;
-                        let time_left = time_left % 60;
-
-                        let prog_text = format!(
-                            " PAUSE {elap_min:02}:{time_left:02} "
-                        );
-                        self.add_color(&prog_text)
-                    };
-                }
+                State::Pause => label = "PAUSE",
             }
+
+            // *brakoll - d: less code in label logic in tui, p: 0, t: refactor, s: closed
+            let prog_text = {
+                let elap_min = time_left / 60;
+                let time_left = time_left % 60;
+                let label = format!(" {label} {elap_min:02}:{time_left:02} ");
+                self.add_color(&label)
+            };
 
             self.write_centered_text(prog_text)?;
 
