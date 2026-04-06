@@ -1,0 +1,12 @@
+[package]
+name = "tmto"
+version = "0.1.0"
+edition = "2024"
+description = "Minimal pomodoro timer in the CLI"
+repository = "https://github.com/simon-danielsson/tmto"
+authors = ["Simon Danielsson <contact@simondanielsson.se>"]
+keywords = ["cli", "pomodoro", "timer", "productivity"]
+homepage = "https://www.simondanielsson.se"
+license = "MIT"
+
+[dependencies]

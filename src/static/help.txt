@@ -1,0 +1,13 @@
+Subcommands:
+help -> print help
+
+Flags:
+-t <int> -> total duration of one work-rest cycle in minutes
+-r <int> -> total duration of the rest interval (the work interval is the sum of total - rest)
+
+Example usage:
+tmto -t 30 -r 10
+
+Controls:
+[Ctrl-C] -> quit
+
