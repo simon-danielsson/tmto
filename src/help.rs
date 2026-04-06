@@ -6,6 +6,7 @@ pub const APP_DESC: &str = env!("CARGO_PKG_DESCRIPTION");
 pub const APP_AUTH: &str = env!("CARGO_PKG_AUTHORS");
 
 // *brakoll - d: fix typo in readme, p: 0, t: docs, s: closed
+// *brakoll - d: fix typo in readme and help, p: 0, t: docs, s: closed
 pub fn print_help() {
     println!("");
     println!("{n} v{v}", n = APP_NAME, v = APP_VERS);
