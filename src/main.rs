@@ -17,7 +17,7 @@ fn main() -> io::Result<()> {
         return Ok(());
     }
 
-    // *brakoll - d: hide cursor, p: 0, t: feature, s: open
+    // *brakoll - d: hide cursor, p: 0, t: feature, s: closed
     // hide cursor
     {
         ctrlc::set_handler(|| {

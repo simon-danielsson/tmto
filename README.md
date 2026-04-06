@@ -15,13 +15,14 @@
 <p align="center">
   <a href="#install">Install</a> •
   <a href="#usage">Usage</a> •
+  <a href="#deps">Dependencies</a> •
   <a href="#license">License</a>
 </p>  
 
 ---
 <div id="install"></div>
 
-## 📦 Install
+## Install
     
 ``` bash
 cargo install tmto
@@ -30,7 +31,7 @@ cargo install tmto
 ---
 <div id="usage"></div>
 
-## 💻 Usage
+## Usage
   
 ``` terminal
 Controls
@@ -51,8 +52,15 @@ Controls:
 ```
    
 ---
+<div id="deps"></div>
+
+## Dependencies
+  
+- [ctrlc](https://github.com/Detegr/rust-ctrlc) 
+  
+---
 <div id="license"></div>
 
-## 📜 License
+## License
 This project is licensed under the [MIT License](https://github.com/simon-danielsson/tmto/blob/main/LICENSE).  
   
