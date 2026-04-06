@@ -15,16 +15,6 @@ impl Arguments {
             tot: u64::default(),
         }
     }
-
-    pub fn test(&mut self) {
-        let test_str = format!(
-            "Total: {} minutes\nWork: {} minutes\nRest: {} minutes",
-            self.tot,
-            self.tot.saturating_sub(self.rest),
-            self.rest,
-        );
-        println!("{}", test_str);
-    }
 }
 
 pub fn parse() -> io::Result<Arguments> {

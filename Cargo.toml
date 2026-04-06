@@ -10,4 +10,5 @@ homepage = "https://www.simondanielsson.se"
 license = "MIT"
 
 [dependencies]
+crossterm = "0.29.0"
 ctrlc = "3.5.2"
