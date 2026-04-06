@@ -34,9 +34,6 @@ cargo install tmto
 ## Usage
   
 ``` terminal
-Controls
-[Esc] : quit
-[Ctrl-C] : quit
 Subcommands:
 help -> print help
 
