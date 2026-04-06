@@ -17,6 +17,18 @@ fn main() -> io::Result<()> {
         return Ok(());
     }
 
+    // *brakoll - d: hide cursor, p: 0, t: feature, s: open
+    // hide cursor
+    {
+        ctrlc::set_handler(|| {
+            print!("\x1b[?25h");
+            let _ = stdout().flush();
+            std::process::exit(130);
+        })
+        .expect("Failed to set Ctrl-C handler.");
+        print!("\x1b[?25l");
+    }
+
     // *brakoll - d: add check for if arguments have been supplied, p: 0, t: feature, s: closed
     if t.args.tot == 0 || t.args.rest == 0 {
         println!(
@@ -67,14 +79,14 @@ impl Tmto {
         })
     }
 
-    fn info_print(&mut self) {
-        let txt = format!(
-            "settings - total: {t}, work: {w}, rest: {r}",
-            t = self.args.tot,
-            w = (self.args.tot - self.args.rest),
-            r = self.args.rest
-        );
-        println!("{}\n", txt);
+    // *brakoll - d: add coloring to text, p: 0, t: feature, s: closed
+    fn add_color(&self, t: &str) -> String {
+        let reset = "\x1b[0m";
+        let col = match self.cycle {
+            Cycle::Work => "\x1b[30;44m", // black on blue
+            _ => "\x1b[30;42m",           // black on green
+        };
+        format!("{col}{t}{reset}")
     }
 
     fn move_cursor_up(&mut self, n: usize) {
@@ -103,8 +115,9 @@ impl Tmto {
 
                 let elap_min = elap_sec / 60;
                 let elap_sec = elap_sec % 60;
-                let prog_text =
-                    format!("{c_cyc_txt} [{elap_min:02}:{elap_sec:02}]\n");
+                let mut prog_text =
+                    format!(" {c_cyc_txt} {elap_min:02}:{elap_sec:02} \n");
+                prog_text = self.add_color(&prog_text);
 
                 self.clear_line(&prog_text, false);
             }
