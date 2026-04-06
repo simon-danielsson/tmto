@@ -1,6 +1,6 @@
 [package]
 name = "tmto"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2024"
 description = "Minimal pomodoro timer in the CLI"
 repository = "https://github.com/simon-danielsson/tmto"
@@ -11,4 +11,3 @@ license = "MIT"
 
 [dependencies]
 crossterm = "0.29.0"
-ctrlc = "3.5.2"

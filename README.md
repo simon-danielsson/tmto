@@ -49,6 +49,8 @@ tmto -t 30 -r 10
 
 Controls:
 [Ctrl-C] -> quit
+[Escape] -> quit
+Any button -> pause
 ```
    
 ---
@@ -56,7 +58,7 @@ Controls:
 
 ## Dependencies
   
-- [ctrlc](https://github.com/Detegr/rust-ctrlc) 
+- [crossterm](https://github.com/crossterm-rs/crossterm) 
   
 ---
 <div id="license"></div>

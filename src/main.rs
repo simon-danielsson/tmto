@@ -1,8 +1,4 @@
-use std::{
-    io::{self, Stdout, Write, stdout},
-    thread,
-    time::Duration,
-};
+use std::io::{self, Stdout, stdout};
 
 use crossterm::terminal;
 
@@ -13,7 +9,7 @@ mod help;
 mod tui;
 mod utils;
 
-// *brakoll - d: add pause key (perhaps 'p'?) to pause timer, p: 0, t: feature, s: open
+// *brakoll - d: add pause key (perhaps 'p'?) to pause timer, p: 0, t: feature, s: closed
 // *brakoll - d: add queue key (perhaps 'q'?) to queue exiting the app after the current cycle ends, p: 0, t: feature, s: open
 
 fn main() -> io::Result<()> {
@@ -33,7 +29,7 @@ fn main() -> io::Result<()> {
         return Ok(());
     }
 
-    while t.state == State::Active {
+    while t.state != State::Quit {
         match t.cycle {
             Cycle::Work => t.draw_tui(t.args.tot - t.args.rest)?,
             Cycle::Rest => t.draw_tui(t.args.rest)?,
@@ -53,6 +49,7 @@ fn main() -> io::Result<()> {
 #[derive(Debug, PartialEq)]
 enum State {
     Active,
+    Pause,
     Quit,
 }
 
@@ -86,10 +83,14 @@ impl Tmto {
     // *brakoll - d: add coloring to text, p: 0, t: feature, s: closed
     fn add_color(&self, t: &str) -> String {
         let reset = "\x1b[0m";
-        let col = match self.cycle {
+        let mut col = match self.cycle {
             Cycle::Work => "\x1b[30;44m", // black on blue
             _ => "\x1b[30;42m",           // black on green
         };
+        if self.state == State::Pause {
+            col = "\x1b[30;41m"; // black on blue
+        }
+
         format!("{col}{t}{reset}")
     }
 }

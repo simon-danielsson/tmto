@@ -20,32 +20,51 @@ impl Tmto {
     pub fn draw_tui(&mut self, time: u64) -> io::Result<()> {
         self.tui_setup()?;
 
-        for elap_sec in (0..=time * 60).rev() {
+        let mut time_left: u64 = time * 60;
+
+        while time_left > 0 {
             // reset cursor
             self.controls()?;
-            if self.state == State::Quit {
-                return Ok(());
-            }
-
-            {
+            let mut prog_text = {
                 let c_cyc_txt = match self.cycle {
                     Cycle::Work => "WORK",
                     Cycle::Rest => "REST",
                 };
 
-                let elap_min = elap_sec / 60;
-                let elap_sec = elap_sec % 60;
+                let elap_min = time_left / 60;
+                let time_left = time_left % 60;
 
-                let mut prog_text =
-                    format!(" {c_cyc_txt} {elap_min:02}:{elap_sec:02} ");
-                prog_text = self.add_color(&prog_text);
+                let prog_text =
+                    format!(" {c_cyc_txt} {elap_min:02}:{time_left:02} ");
+                self.add_color(&prog_text)
+            };
 
-                self.write_centered_text(prog_text)?;
+            match self.state {
+                State::Quit => {
+                    return Ok(());
+                }
+                State::Active => {}
+                State::Pause => {
+                    prog_text = {
+                        let elap_min = time_left / 60;
+                        let time_left = time_left % 60;
+
+                        let prog_text = format!(
+                            " PAUSE {elap_min:02}:{time_left:02} "
+                        );
+                        self.add_color(&prog_text)
+                    };
+                }
             }
+
+            self.write_centered_text(prog_text)?;
 
             self.sout.flush()?;
             // *brakoll - d: change millis to sec, p: 0, t: fix, s: closed
-            thread::sleep(Duration::from_secs(1));
+            if self.state != State::Pause {
+                time_left -= 1;
+                thread::sleep(Duration::from_secs(1));
+            }
 
             // adjust if term changes size
             if (self.t_cols, self.t_rows) != terminal::size()? {
@@ -88,3 +107,4 @@ impl Tmto {
         Ok(())
     }
 }
+

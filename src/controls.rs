@@ -8,7 +8,7 @@ impl Tmto {
     pub fn controls(&mut self) -> std::io::Result<()> {
         if poll(Duration::ZERO)? {
             match self.state {
-                State::Active => {
+                State::Active | State::Pause => {
                     if let Event::Key(KeyEvent {
                         code, modifiers, ..
                     }) = event::read()?
@@ -24,6 +24,15 @@ impl Tmto {
                                 KeyModifiers::CONTROL,
                             ) => {
                                 self.state = State::Quit;
+                            }
+                            (KeyCode::Char(_), _) => {
+                                if self.state == State::Active {
+                                    self.state = State::Pause;
+                                    self.tui_resize()?;
+                                } else {
+                                    self.state = State::Active;
+                                    self.tui_resize()?;
+                                }
                             }
                             _ => {
                                 self.state = State::Quit;
