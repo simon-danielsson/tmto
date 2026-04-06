@@ -1,5 +1,6 @@
 Subcommands:
 help -> print help
+big -> render as large text
 
 Flags:
 -t <int> -> total duration of one work-rest cycle in minutes
@@ -7,8 +8,10 @@ Flags:
 
 Example usage:
 tmto -t 30 -r 10
+tmto big -t 60 -r 20
 
 Controls:
 [Ctrl-C] -> quit
 [Escape] -> quit
 Any key -> pause
+

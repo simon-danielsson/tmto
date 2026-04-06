@@ -5,12 +5,14 @@ pub struct Arguments {
     pub help: bool,
     pub rest: u64, // rest duration in minutes (block - rest = work)
     pub tot: u64,  // total block duration in minutes
+    pub big: bool,
 }
 
 impl Arguments {
     fn new() -> Self {
         Self {
             help: false,
+            big: false,
             rest: u64::default(),
             tot: u64::default(),
         }
@@ -25,6 +27,10 @@ pub fn parse() -> io::Result<Arguments> {
         match arg.as_str() {
             "help" => {
                 a.help = true;
+            }
+
+            "big" => {
+                a.big = true;
             }
 
             "-r" => {

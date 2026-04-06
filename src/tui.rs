@@ -6,20 +6,19 @@ use std::{
 
 use crossterm::{
     ExecutableCommand, QueueableCommand,
-    cursor::{self, MoveTo},
+    cursor::{self, MoveTo, MoveToColumn, MoveToNextLine},
     terminal::{
         self, Clear, ClearType, EnterAlternateScreen, LeaveAlternateScreen,
         disable_raw_mode, enable_raw_mode,
     },
 };
+use figlet_rs::Toilet;
 
 use crate::{Cycle, State, Tmto};
 
 impl Tmto {
     // *brakoll - d: add "fullscreen" command, p: 0, t: feature, s: closed
     pub fn draw_tui(&mut self, time: u64) -> io::Result<()> {
-        self.tui_setup()?;
-
         let mut time_left: u64 = time * 60;
 
         while time_left > 0 {
@@ -41,11 +40,19 @@ impl Tmto {
             let prog_text = {
                 let elap_min = time_left / 60;
                 let time_left = time_left % 60;
-                let label = format!(" {label} {elap_min:02}:{time_left:02} ");
-                self.add_color(&label)
+                format!(" {label} {elap_min:02}:{time_left:02} ")
             };
 
-            self.write_centered_text(prog_text)?;
+            if self.args.big {
+                let exp_msg = "Failed to load fonts.";
+                let font = Toilet::mono9().expect(exp_msg);
+                let prog_text_big =
+                    font.convert(&prog_text).expect(exp_msg).as_str();
+                self.write_centered_text_big(prog_text_big)?;
+            } else {
+                let prog_text = self.add_color(&prog_text);
+                self.write_centered_text(prog_text)?;
+            }
 
             self.sout.flush()?;
             // *brakoll - d: change millis to sec, p: 0, t: fix, s: closed
@@ -63,10 +70,31 @@ impl Tmto {
         Ok(())
     }
 
+    pub fn write_centered_text_big(&mut self, text: String) -> io::Result<()> {
+        let lines: Vec<&str> = text.lines().collect();
+        let middle_c = self.t_cols / 2;
+        let middle_r = self.t_rows / 2;
+        let max_width = lines
+            .iter()
+            .map(|line| line.chars().count() as u16)
+            .max()
+            .unwrap_or(0);
+        let c = middle_c.saturating_sub(max_width as u16 / 2);
+        let r = middle_r.saturating_sub(lines.len() as u16 / 2);
+        self.sout.queue(MoveTo(c, r))?;
+        for l in lines {
+            let lc = self.add_color(&l);
+            self.sout.write(lc.as_bytes())?;
+            self.sout.queue(MoveToNextLine(1))?;
+            self.sout.queue(MoveToColumn(c))?;
+        }
+        Ok(())
+    }
+
     pub fn write_centered_text(&mut self, text: String) -> io::Result<()> {
         let middle_c = self.t_cols / 2;
         let middle_r = self.t_rows / 2;
-        let c = middle_c - (text.chars().count() / 4) as u16;
+        let c = middle_c.saturating_sub(text.chars().count() as u16 / 4);
         self.sout.queue(MoveTo(c, middle_r))?;
         self.sout.write(text.as_bytes())?;
         Ok(())
@@ -95,4 +123,3 @@ impl Tmto {
         Ok(())
     }
 }
-

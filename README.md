@@ -3,7 +3,7 @@
 </h1>
   
 <p align="center">
-  <em>Minimal pomodoro timer in the CLI.</em>
+  <em>Minimal pomodoro timer in the TUI.</em>
 </p>
   
 <p align="center">
@@ -36,6 +36,7 @@ cargo install tmto
 ``` terminal
 Subcommands:
 help -> print help
+big -> render as large text
 
 Flags:
 -t <int> -> total duration of one work-rest cycle in minutes
@@ -43,6 +44,7 @@ Flags:
 
 Example usage:
 tmto -t 30 -r 10
+tmto big -t 60 -r 20
 
 Controls:
 [Ctrl-C] -> quit
@@ -56,6 +58,7 @@ Any key -> pause
 ## Dependencies
   
 - [crossterm](https://github.com/crossterm-rs/crossterm) 
+- [figlet-rs](https://github.com/yuanbohan/rs-figlet) 
   
 ---
 <div id="license"></div>

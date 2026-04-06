@@ -9,6 +9,7 @@ mod help;
 mod tui;
 mod utils;
 
+// *brakoll - d: add big text subcommand, p: 0, t: feature, s: closed
 // *brakoll - d: add pause key (perhaps 'p'?) to pause timer, p: 0, t: feature, s: closed
 // *brakoll - d: add queue key (perhaps 'q'?) to queue exiting the app after the current cycle ends, p: 0, t: feature, s: closed
 
@@ -29,6 +30,7 @@ fn main() -> io::Result<()> {
         return Ok(());
     }
 
+    t.tui_setup()?;
     while t.state != State::Quit {
         match t.cycle {
             Cycle::Work => t.draw_tui(t.args.tot - t.args.rest)?,
