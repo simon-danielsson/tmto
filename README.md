@@ -16,7 +16,8 @@
   <a href="#install">Install</a> •
   <a href="#usage">Usage</a> •
   <a href="#deps">Dependencies</a> •
-  <a href="#license">License</a>
+  <a href="#license">License</a> •
+  <a href="#screenshots">Screenshots</a>
 </p>  
 
 ---
@@ -65,4 +66,12 @@ Any key -> pause
 
 ## License
 This project is licensed under the [MIT License](https://github.com/simon-danielsson/tmto/blob/main/LICENSE).  
+   
+---
+<div id="screenshots"></div>
   
+## Screenshots   
+
+![media/big.png]
+  
+![media/small.png]

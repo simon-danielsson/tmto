@@ -5,6 +5,7 @@ pub const APP_REPO: &str = env!("CARGO_PKG_REPOSITORY");
 pub const APP_DESC: &str = env!("CARGO_PKG_DESCRIPTION");
 pub const APP_AUTH: &str = env!("CARGO_PKG_AUTHORS");
 
+// *brakoll - d: add screenshots to readme, p: 0, t: feature, s: closed
 // *brakoll - d: fix typo in readme, p: 0, t: docs, s: closed
 // *brakoll - d: fix typo in readme and help, p: 0, t: docs, s: closed
 pub fn print_help() {
