@@ -1,4 +1,4 @@
-const HELP_CONTENTS: &str = include_str!("static/help.txt");
+const HELP_CONTENTS: &str = include_str!("../static/help.txt");
 pub const APP_NAME: &str = env!("CARGO_PKG_NAME");
 pub const APP_VERS: &str = env!("CARGO_PKG_VERSION");
 pub const APP_REPO: &str = env!("CARGO_PKG_REPOSITORY");
@@ -17,3 +17,4 @@ pub fn print_help() {
     println!("==========");
     print!("{}", HELP_CONTENTS);
 }
+

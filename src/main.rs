@@ -5,20 +5,20 @@ use crossterm::terminal;
 use crate::utils::args::Arguments;
 
 mod controls;
-mod help;
 mod tui;
 mod utils;
 
 // *brakoll - d: add big text subcommand, p: 0, t: feature, s: closed
 // *brakoll - d: add pause key (perhaps 'p'?) to pause timer, p: 0, t: feature, s: closed
 // *brakoll - d: add queue key (perhaps 'q'?) to queue exiting the app after the current cycle ends, p: 0, t: feature, s: closed
+// *brakoll - d: add fill subcommand to fill the entire screen with the colour, p: 0, t: feature, s: closed
 
 fn main() -> io::Result<()> {
     let term_size = terminal::size()?;
     let mut t = Tmto::new(utils::args::parse()?, term_size.0, term_size.1)?;
 
     if t.args.help {
-        help::print_help();
+        utils::help::print_help();
         return Ok(());
     }
 
@@ -55,10 +55,28 @@ enum State {
     Quit,
 }
 
+impl State {
+    pub fn color(&mut self) -> &str {
+        match self {
+            State::Pause => "\x1b[30;41m", // black on red
+            _ => "",
+        }
+    }
+}
+
 #[derive(Debug, PartialEq)]
 enum Cycle {
     Work,
     Rest,
+}
+
+impl Cycle {
+    pub fn color(&mut self) -> &str {
+        match self {
+            Cycle::Work => "\x1b[30;44m", // black on blue
+            _ => "\x1b[30;42m",           // black on green
+        }
+    }
 }
 
 struct Tmto {
@@ -80,19 +98,5 @@ impl Tmto {
             cycle: Cycle::Work,
             state: State::Active,
         })
-    }
-
-    // *brakoll - d: add coloring to text, p: 0, t: feature, s: closed
-    fn add_color(&self, t: &str) -> String {
-        let reset = "\x1b[0m";
-        let mut col = match self.cycle {
-            Cycle::Work => "\x1b[30;44m", // black on blue
-            _ => "\x1b[30;42m",           // black on green
-        };
-        if self.state == State::Pause {
-            col = "\x1b[30;41m"; // black on red
-        }
-
-        format!("{col}{t}{reset}")
     }
 }

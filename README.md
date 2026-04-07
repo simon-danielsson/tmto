@@ -38,14 +38,19 @@ cargo install tmto
 Subcommands:
 help -> print help
 big -> render as large text
+fill -> fill entire viewport with color
 
 Flags:
--t <int> -> total duration of one work-rest cycle in minutes
--r <int> -> total duration of the rest interval (the work interval is the sum of total - rest)
+-t <int> -> duration of a complete work-rest cycle in minutes
+-r <int> -> duration of the rest interval
 
-Example usage:
-tmto -t 30 -r 10
-tmto big -t 60 -r 20
+(work duration = total duration - rest duration)
+
+Example usages:
+$ tmto -t 30 -r 10
+$ tmto big -t 60 -r 20
+$ tmto fill -t 20 -r 5
+$ tmto fill big -t 15 -r 5
 
 Controls:
 [Ctrl-C] -> quit

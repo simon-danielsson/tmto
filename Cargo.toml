@@ -1,6 +1,6 @@
 [package]
 name = "tmto"
-version = "0.1.7"
+version = "0.1.8"
 edition = "2024"
 description = "Minimal pomodoro timer in the TUI."
 repository = "https://github.com/simon-danielsson/tmto"

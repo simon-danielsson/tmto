@@ -7,6 +7,8 @@ use std::{
 use crossterm::{
     ExecutableCommand, QueueableCommand,
     cursor::{self, MoveTo, MoveToColumn, MoveToNextLine},
+    execute,
+    style::{Color, SetBackgroundColor},
     terminal::{
         self, Clear, ClearType, EnterAlternateScreen, LeaveAlternateScreen,
         disable_raw_mode, enable_raw_mode,
@@ -20,6 +22,7 @@ impl Tmto {
     // *brakoll - d: add "fullscreen" command, p: 0, t: feature, s: closed
     pub fn draw_tui(&mut self, time: u64) -> io::Result<()> {
         let mut time_left: u64 = time * 60;
+        self.paint_bg()?;
 
         while time_left > 0 {
             let mut label = match self.cycle {
@@ -103,6 +106,7 @@ impl Tmto {
     pub fn tui_resize(&mut self) -> io::Result<()> {
         self.sout.queue(Clear(ClearType::All))?;
         (self.t_cols, self.t_rows) = terminal::size()?;
+        self.paint_bg()?;
         Ok(())
     }
 
@@ -112,6 +116,21 @@ impl Tmto {
         self.sout.execute(EnterAlternateScreen)?;
         self.sout.queue(cursor::SavePosition)?;
         self.sout.queue(cursor::Hide)?;
+        self.paint_bg()?;
+        Ok(())
+    }
+    pub fn paint_bg(&mut self) -> io::Result<()> {
+        let mut bg_col = self.cycle.color();
+
+        if self.state == State::Pause {
+            bg_col = self.state.color();
+        }
+        let txt = format!("{}\x1b[2J", bg_col);
+
+        if self.args.fill {
+            write!(self.sout, "{txt}").unwrap();
+        }
+
         Ok(())
     }
 
@@ -121,5 +140,16 @@ impl Tmto {
         self.sout.queue(cursor::RestorePosition)?;
         self.sout.queue(cursor::Show)?;
         Ok(())
+    }
+
+    // *brakoll - d: add coloring to text, p: 0, t: feature, s: closed
+    fn add_color(&mut self, t: &str) -> String {
+        let reset = "\x1b[0m";
+        let mut col = self.cycle.color();
+        if self.state == State::Pause {
+            col = self.state.color();
+        }
+
+        format!("{col}{t}{reset}")
     }
 }

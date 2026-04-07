@@ -6,6 +6,7 @@ pub struct Arguments {
     pub rest: u64, // rest duration in minutes (block - rest = work)
     pub tot: u64,  // total block duration in minutes
     pub big: bool,
+    pub fill: bool,
 }
 
 impl Arguments {
@@ -13,6 +14,7 @@ impl Arguments {
         Self {
             help: false,
             big: false,
+            fill: false,
             rest: u64::default(),
             tot: u64::default(),
         }
@@ -31,6 +33,10 @@ pub fn parse() -> io::Result<Arguments> {
 
             "big" => {
                 a.big = true;
+            }
+
+            "fill" => {
+                a.fill = true;
             }
 
             "-r" => {
