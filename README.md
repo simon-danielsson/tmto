@@ -78,5 +78,5 @@ This project is licensed under the [MIT License](https://github.com/simon-daniel
 ## Screenshots   
 
 ![big](media/big.png)
-  
 ![small](media/small.png)
+![bigfill](media/bigfill.png)

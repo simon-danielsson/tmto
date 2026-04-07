@@ -17,4 +17,3 @@ pub fn print_help() {
     println!("==========");
     print!("{}", HELP_CONTENTS);
 }
-
